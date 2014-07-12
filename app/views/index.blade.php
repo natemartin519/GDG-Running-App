@@ -14,7 +14,9 @@
         <script type="text/javascript">
             function initialize() {
                 var heatmapData = [
-                    {location: new google.maps.LatLng(43.407, -80.480), weight: 1}
+                    @foreach ($mapData as $point)
+                        {location: new google.maps.LatLng({{ $point['lat'] . ',' . $point['lon'] }}), weight: 1},
+                    @endforeach
                 ];
 
                 var firstPoint = new google.maps.LatLng(43.407, -80.480);
@@ -39,6 +41,6 @@
     </head>
 
     <body>
-        <div id="map-canvas">
+        <div id="map-canvas"></div>
     </body>
 </html>

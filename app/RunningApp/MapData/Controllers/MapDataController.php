@@ -1,10 +1,12 @@
-<?php namespace RunningApp\RunData\Controllers;
+<?php namespace RunningApp\MapData\Controllers;
 
 use BaseController;
-use RunData;
+use RunningApp\Models\RunData;
 use View;
+use File;
+use Formatter;
 
-class RunDataController extends BaseController
+class MapDataController extends BaseController
 {
 
     protected $runData;
@@ -20,6 +22,23 @@ class RunDataController extends BaseController
      * @return Response
      */
     public function index()
+    {
+
+        $file = File::get('./public/gpx/activity_530174134.gpx');
+        $xmlArray = Formatter::make($file, 'xml')->to_array();
+        $mapData = array_get($xmlArray, 'trk.trkseg.trkpt');
+
+        $finalData = [];
+        foreach ($mapData as $lineData) {
+            $flatLine = array_flatten($lineData);
+            array_push($finalData, ['lon' => $flatLine[0], 'lat' => $flatLine[1]]);
+        }
+
+        return View::make('index')
+            ->with('mapData', $finalData);
+    }
+
+    public function create()
     {
         return View::make('index');
     }

@@ -1,8 +1,9 @@
 <?php namespace RunningApp\Models;
 
-class RunData extends BaseModel
+use Eloquent;
+
+class RunData extends Eloquent
 {
     protected $fillable = [];
-
     protected static $rules = [];
 }
