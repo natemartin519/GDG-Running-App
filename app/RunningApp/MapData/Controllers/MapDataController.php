@@ -23,15 +23,20 @@ class MapDataController extends BaseController
      */
     public function index()
     {
-
-        $file = File::get('./public/gpx/activity_530174134.gpx');
-        $xmlArray = Formatter::make($file, 'xml')->to_array();
-        $mapData = array_get($xmlArray, 'trk.trkseg.trkpt');
-
         $finalData = [];
-        foreach ($mapData as $lineData) {
-            $flatLine = array_flatten($lineData);
-            array_push($finalData, ['lon' => $flatLine[0], 'lat' => $flatLine[1]]);
+
+        $fileList = File::files('./public/gpx');
+
+        foreach ($fileList as $fileName) {
+            $file = File::get($fileName);
+
+            $xmlArray = Formatter::make($file, 'xml')->to_array();
+            $mapData = array_get($xmlArray, 'trk.trkseg.trkpt');
+
+            foreach ($mapData as $lineData) {
+                $flatLine = array_flatten($lineData);
+                array_push($finalData, ['lon' => $flatLine[0], 'lat' => $flatLine[1]]);
+            }
         }
 
         return View::make('index')

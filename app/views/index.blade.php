@@ -15,7 +15,7 @@
             function initialize() {
                 var heatmapData = [
                     @foreach ($mapData as $point)
-                        {location: new google.maps.LatLng({{ $point['lat'] . ',' . $point['lon'] }}), weight: 1},
+                        new google.maps.LatLng({{ $point['lat'] . ',' . $point['lon'] }}),
                     @endforeach
                 ];
 
@@ -23,7 +23,8 @@
 
                 var mapOptions = {
                     center: firstPoint,
-                    zoom: 15
+                    zoom: 16,
+                    mapTypeId: google.maps.MapTypeId.SATELLITE
                 };
 
                 var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
